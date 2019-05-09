@@ -1,36 +1,54 @@
-window.addEventListener('DOMContentLoaded', (event) => {
-  fetch('https://jsonplaceholder.typicode.com/posts/')
-  .then(response => response.json())
-  .then(json => console.log(json))  }
-)
+// fetch('https://jsonplaceholder.typicode.com/posts/')
+// .then(response => response.json())
+// .then(json => console.log(json))  }
 
-document.body.onload = addElement;
+window.addEventListener('DOMContentLoaded', main)
 
-function addElement () {
-  let main = document.querySelector('#app');
+function createHeader (mainElement) {
+  console.log(mainElement)
+  let vdom = {
+    'header': {
+      'h1': 'New Title',
+      'h3': 'Subtitle'
+    },
+    'style': `
+      .header {
+        background: lightpink;
+        padding: 20px;
+      }
+      .h1 {
+        text-align: center;
+      }
+    `
+  }
+  let vdomKeys = Object.keys(vdom)
 
-  let header = document.createElement('header')
-  header.classList.add('header')
-  let h1 = document.createElement('h1')
-  let h3 = document.createElement('h3')
-  h1.innerText = 'New Title'
-  h3.innerText = 'Subtitle'
-  header.appendChild(h1)
-  header.appendChild(h3)
-  h1.classList.add('h1')
+  vdomKeys.forEach(key => {
+    let el = document.createElement(key)
 
-  let style = document.createElement('style')
-  style.innerText = `
-    .header {
-      background: lightpink;
-      padding: 20px;
+    if (typeof vdom[key] === 'string') {
+      el.innerText = vdom[key]
+    } else {
+
+      let children = Object.keys(vdom[key])
+
+      children.forEach(childKey => {
+        let childrenEl = document.createElement(childKey)
+        childrenEl.innerText = vdom[key][childKey]
+        el.appendChild(childrenEl)
+      })
     }
-    .h1 {
-      text-align: center;
-    }
-  `
 
-  main.appendChild(header)
-  main.appendChild(style)
+    console.log(el)
+  })
 
+}
+
+function organise() {
+
+}
+
+function main () {
+  let mainElement = document.querySelector('#app');
+  createHeader(mainElement)
 }
