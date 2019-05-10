@@ -1,7 +1,3 @@
-// fetch('https://jsonplaceholder.typicode.com/posts/')
-// .then(response => response.json())
-// .then(json => console.log(json))  }
-
 window.addEventListener('DOMContentLoaded', main)
 
 function render (rootEl, model) {
@@ -29,12 +25,38 @@ function render (rootEl, model) {
 
 }
 
+function requestData () {
+  let res = fetch('https://jsonplaceholder.typicode.com/posts/')
+  .then(response => response.json())
+  .then(json => json)
+  return res
+}
+
+
+function header (title, subtitle) {
+  let headerElement = document.createElement('header')
+  headerElement.innerHTML = `
+    <h1 class="title">${title}</h1>
+    <h3>${subtitle}</h3>
+  `
+  return headerElement
+}
+
+function listItem (title, body) {
+  let element = document.createElement('li')
+  element.innerHTML = `
+  <h5>${title} </h5>
+  <p> ${body} </p>
+  `
+  return element
+}
+
 
 function main () {
   // Component models ------>
-  let header = {
+  let headerState = {
     'header': {
-      'h1': 'New Title',
+      'h1': 'New Title 2',
       'h3': 'Subtitle',
     }
   }
@@ -43,7 +65,7 @@ function main () {
     'ul' : ''
   }
 
-  let listItem = {
+  let stateLi = {
     'li' : {
       'h5': 'List title',
       'p': 'list body'
@@ -70,15 +92,22 @@ function main () {
   let mainElement = document.querySelector('#app');
   let bodyElement = mainElement.closest('body');
 
-  render(mainElement, header)
+  mainElement.appendChild(header(headerState.header.h1, headerState.header.h3))
+
   render (mainElement, list)
 
-  let listElement = document.querySelector('ul');
+  let ul = document.querySelector('ul');
 
-  render (listElement, listItem)
+  requestData().then(data => {
+    // for (var i = 0; i < 10; i++) {
+    //   render(ul, listItem)
+    // }
+    let li = listItem(data[0].title, data[0].body)
 
-  for (var i = 0; i < 50; i++) {
-    render(listElement, listItem)
-  }
+    ul.appendChild(li)
+    // console.log(ul)
+    // render (mainElement, ul)
+  })
+
   render (bodyElement, style)
 }
