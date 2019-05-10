@@ -99,10 +99,12 @@ function main () {
   let ul = document.querySelector('ul');
 
   requestData().then(data => {
-    for (var i = 0; i < data.length; i++) {
-      let li = listItem(data[0].title, data[0].body)
-      ul.appendChild(li)
-    }
+    // for (var i = 0; i < data.length; i++) {
+    //   let li = listItem(data[0].title, data[0].body)
+    //   ul.appendChild(li)
+    // }
+
+    data.forEach(x => ul.appendChild(listItem(x.title, x.body)))
   })
 
   render (bodyElement, style)
