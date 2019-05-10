@@ -99,14 +99,10 @@ function main () {
   let ul = document.querySelector('ul');
 
   requestData().then(data => {
-    // for (var i = 0; i < 10; i++) {
-    //   render(ul, listItem)
-    // }
-    let li = listItem(data[0].title, data[0].body)
-
-    ul.appendChild(li)
-    // console.log(ul)
-    // render (mainElement, ul)
+    for (var i = 0; i < data.length; i++) {
+      let li = listItem(data[0].title, data[0].body)
+      ul.appendChild(li)
+    }
   })
 
   render (bodyElement, style)
