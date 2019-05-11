@@ -32,6 +32,13 @@ function requestData () {
   return res
 }
 
+function requestUsers () {
+  let result = fetch('http://jsonplaceholder.typicode.com/users')
+  .then(response => response.json())
+  .then(json => json)
+  return result
+}
+
 
 function header (title, subtitle) {
   let headerElement = document.createElement('header')
@@ -42,11 +49,12 @@ function header (title, subtitle) {
   return headerElement
 }
 
-function listItem (title, body) {
+function listItem (title, body, author) {
   let element = document.createElement('li')
   element.innerHTML = `
   <h5>${title} </h5>
   <p> ${body} </p>
+  <small> ${author} <small>
   `
   return element
 }
@@ -68,7 +76,7 @@ function main () {
   let stateLi = {
     'li' : {
       'h5': 'List title',
-      'p': 'list body'
+      'p': 'list body',
     }
   }
 
@@ -98,14 +106,20 @@ function main () {
 
   let ul = document.querySelector('ul');
 
-  requestData().then(data => {
+  requestUsers().then(users =>
+    // for (var i = 0; i < data.length; i++) {
+    //   let li = listItem(data[0].title, data[0].body)
+    //   ul.appendChild(li)
+    // }
+      requestData().then(data => {
     // for (var i = 0; i < data.length; i++) {
     //   let li = listItem(data[0].title, data[0].body)
     //   ul.appendChild(li)
     // }
 
-    data.forEach(x => ul.appendChild(listItem(x.title, x.body)))
-  })
+    data.forEach(x => ul.appendChild(listItem(x.title, x.body, users[x.userId - 1].name)))
+  }))
+
 
   render (bodyElement, style)
 }
