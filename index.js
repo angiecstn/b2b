@@ -106,19 +106,34 @@ function main () {
 
   let ul = document.querySelector('ul');
 
-  requestUsers().then(users =>
-    // for (var i = 0; i < data.length; i++) {
-    //   let li = listItem(data[0].title, data[0].body)
-    //   ul.appendChild(li)
-    // }
-      requestData().then(data => {
-    // for (var i = 0; i < data.length; i++) {
-    //   let li = listItem(data[0].title, data[0].body)
-    //   ul.appendChild(li)
-    // }
+  let state = { }
 
-    data.forEach(x => ul.appendChild(listItem(x.title, x.body, users[x.userId - 1].name)))
-  }))
+  requestUsers().then(users => {
+    state.users = users
+    requestData().then(posts => {
+      state.posts = posts
+      posts.forEach(post => {
+        let author = users[post.userId - 1];
+        ul.appendChild(listItem(post.title, post.body, author.name))
+      })
+    })
+  })
+
+  console.log(state)
+
+  // requestUsers().then(users =>
+  //   // for (var i = 0; i < data.length; i++) {
+  //   //   let li = listItem(data[0].title, data[0].body)
+  //   //   ul.appendChild(li)
+  //   // }
+  //     requestData().then(data => {
+  //   // for (var i = 0; i < data.length; i++) {
+  //   //   let li = listItem(data[0].title, data[0].body)
+  //   //   ul.appendChild(li)
+  //   // }
+
+  //   data.forEach(x => ul.appendChild(listItem(x.title, x.body, users[x.userId - 1].name)))
+  // }))
 
 
   render (bodyElement, style)
